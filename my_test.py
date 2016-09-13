@@ -1,3 +1,4 @@
+from my_debugger_defines import *
 import my_debugger
 
 
@@ -10,10 +11,14 @@ if __name__ == '__main__':
 
     printf_address = debugger.func_resolve('msvcrt.dll', 'printf')
     print '[*] Address of printf: 0x%08x' % printf_address
-    if debugger.bp_set(printf_address):
-        print '[*] Setting breakpoint at: 0x%08x' % printf_address
+    if debugger.bp_set_hw(printf_address, 1, HW_EXECUTE):
+        print '[*] Setting hardware breakpoint at: 0x%08x' % printf_address
     else:
         print 'Cannot setting breakpoint at: 0x%08x' % printf_address
+    # if debugger.bp_set(printf_address):
+    #     print '[*] Setting breakpoint at: 0x%08x' % printf_address
+    # else:
+    #     print 'Cannot setting breakpoint at: 0x%08x' % printf_address
 
     debugger.run()
 

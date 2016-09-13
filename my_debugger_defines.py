@@ -18,6 +18,7 @@ CREATE_NEW_CONSOLE = 0x00000010
 PROCESS_ALL_ACCESS = 0x001F0FFF
 INFINITE = 0xFFFFFFFF
 DBG_CONTINUE = 0x00010002
+DBG_EXCEPTION_NOT_HANDLED = 0x80010001
 
 # Debug event code constants
 EXCEPTION_DEBUG_EVENT = 0x01
@@ -31,10 +32,10 @@ OUTPUT_DEBUG_STRING_EVENT = 0x08
 RIP_EVENT = 0x09
 
 # debug exception codes.
-EXCEPTION_ACCESS_VIOLATION     = 0xC0000005
-EXCEPTION_BREAKPOINT           = 0x80000003
-EXCEPTION_GUARD_PAGE           = 0x80000001
-EXCEPTION_SINGLE_STEP          = 0x80000004
+EXCEPTION_ACCESS_VIOLATION = 0xC0000005
+EXCEPTION_BREAKPOINT = 0x80000003
+EXCEPTION_GUARD_PAGE = 0x80000001
+EXCEPTION_SINGLE_STEP = 0x80000004
 
 # Thread constants for CreateToolhelp32Snapshot()
 TH32CS_SNAPHEAPLIST = 0x00000001
@@ -48,6 +49,12 @@ THREAD_ALL_ACCESS = 0x001F03FF
 # Context flags for GetThreadContext()
 CONTEXT_FULL = 0x00010007
 CONTEXT_DEBUG_REGISTERS = 0x00010010
+
+# Hardware breakpoint conditions
+HW_ACCESS = 0x00000003
+HW_EXECUTE = 0x00000000
+HW_WRITE = 0x00000001
+
 
 # Structures for CreateProcessA() function
 class STARTUPINFO(Structure):
@@ -190,9 +197,9 @@ class CONTEXT(Structure):
         ("ExtendedRegisters", BYTE * 512),
     ]
 
+
 # THREADENTRY32 contains information about a thread
 # we use this for enumerating all of the system threads
-
 class THREADENTRY32(Structure):
     _fields_ = [
         ("dwSize",             DWORD),
