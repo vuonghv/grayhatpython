@@ -210,3 +210,52 @@ class THREADENTRY32(Structure):
         ("tpDeltaPri",         DWORD),
         ("dwFlags",            DWORD),
     ]
+
+
+# Supporting struct for the SYSTEM_INFO_UNION union
+class PROC_STRUCT(Structure):
+    _fields_ = [
+        ("wProcessorArchitecture", WORD),
+        ("wReserved", WORD)
+    ]
+
+
+# Supporting union for the SYSTEM_INFO struct
+class SYSTEM_INFO_UNION(Union):
+    _fields_ = [
+        ("dwOemId",    DWORD),
+        ("sProcStruc", PROC_STRUCT),
+    ]
+
+
+# SYSTEM_INFO structure is populated when a call to
+# kernel32.GetSystemInfo() is made. We use the dwPageSize
+# member for size calculations when setting memory breakpoints
+class SYSTEM_INFO(Structure):
+    _fields_ = [
+        ("uSysInfo", SYSTEM_INFO_UNION),
+        ("dwPageSize", DWORD),
+        ("lpMinimumApplicationAddress", LPVOID),
+        ("lpMaximumApplicationAddress", LPVOID),
+        ("dwActiveProcessorMask", DWORD),
+        ("dwNumberOfProcessors", DWORD),
+        ("dwProcessorType", DWORD),
+        ("dwAllocationGranularity", DWORD),
+        ("wProcessorLevel", WORD),
+        ("wProcessorRevision", WORD),
+    ]
+
+
+# MEMORY_BASIC_INFORMATION contains information about a
+# particular region of memory. A call to kernel32.VirtualQuery()
+# populates this structure.
+class MEMORY_BASIC_INFORMATION(Structure):
+    _fields_ = [
+        ("BaseAddress", PVOID),
+        ("AllocationBase", PVOID),
+        ("AllocationProtect", DWORD),
+        ("RegionSize", SIZE_T),
+        ("State", DWORD),
+        ("Protect", DWORD),
+        ("Type", DWORD),
+    ]

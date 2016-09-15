@@ -19,6 +19,14 @@ class debugger():
         self.first_breakpoint = True
         self.hardware_breakpoints = {}
 
+        # Determine and store the default page size for the system
+        system_info = SYSTEM_INFO()
+        kernel32.GetSystemInfo(byref(system_info))
+        self.page_size = system_info.dwPageSize
+
+        self.guarded_pages = []
+        self.memory_breakpoints = {}
+
     def load(self, path_to_exe):
 
         # dwCreation flag determines how to create the process
