@@ -349,3 +349,40 @@ class debugger():
         # Remove the break point from the internal list
         del self.hardware_breakpoints[slot]
         return True
+
+    def bp_set_mem(self, address, size):
+        memory_info = MEMORY_BASIC_INFORMATION()
+
+        data_size = kernel32.VirtualQueryEx(self.h_process,
+                                            address,
+                                            byref(memory_info),
+                                            sizeof(memory_info))
+        if data_size < sizeof(memory_info):
+            return False
+
+        current_page = memory_info.BaseAddress
+
+        # Set the permissions on all pages that are effected
+        # by our memory breakpoint
+        while current_page <= address + size:
+            # Add the page to the list; this will differentiate
+            # our guarded pages from those that were set by the
+            # OS or the debuggee process
+            self.guarded_pages.append(current_page)
+
+            old_protection = c_ulong(0)
+            success = kernel32.VirtualProtectEx(self.h_process,
+                                                current_page,
+                                                size,
+                                                memory_info.Protect | PAGE_GUARD,
+                                                byref(old_protection))
+            if not success:
+                return False
+
+            # Increase our range by the size of the
+            # default system memory page size
+            current_page += self.page_size
+
+        # Add the momory breakpoint to our global list
+        self.memory_breakpoints[address] = (size, memory_info)
+        return True

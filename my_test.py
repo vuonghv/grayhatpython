@@ -10,15 +10,25 @@ if __name__ == '__main__':
     debugger.attach(int(pid))
 
     printf_address = debugger.func_resolve('msvcrt.dll', 'printf')
-    print '[*] Address of printf: 0x%08x' % printf_address
-    if debugger.bp_set_hw(printf_address, 1, HW_EXECUTE):
-        print '[*] Setting hardware breakpoint at: 0x%08x' % printf_address
-    else:
-        print 'Cannot setting breakpoint at: 0x%08x' % printf_address
+
+    # Set a soft breakpoint
     # if debugger.bp_set(printf_address):
     #     print '[*] Setting breakpoint at: 0x%08x' % printf_address
     # else:
     #     print 'Cannot setting breakpoint at: 0x%08x' % printf_address
+
+    # Set a hardware breakpoint
+    # print '[*] Address of printf: 0x%08x' % printf_address
+    # if debugger.bp_set_hw(printf_address, 1, HW_EXECUTE):
+    #     print '[*] Setting hardware breakpoint at: 0x%08x' % printf_address
+    # else:
+    #     print 'Cannot setting breakpoint at: 0x%08x' % printf_address
+
+    # Set memory breakpoint
+    if debugger.bp_set_mem(printf_address, 10):
+        print '[*] Set memory breakpoint'
+    else:
+        print 'Cannot setting memory breakpoint'
 
     debugger.run()
 

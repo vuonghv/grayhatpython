@@ -55,6 +55,19 @@ HW_ACCESS = 0x00000003
 HW_EXECUTE = 0x00000000
 HW_WRITE = 0x00000001
 
+# Memory page permissions, used by VirtualProtect()
+PAGE_NOACCESS                  = 0x00000001
+PAGE_READONLY                  = 0x00000002
+PAGE_READWRITE                 = 0x00000004
+PAGE_WRITECOPY                 = 0x00000008
+PAGE_EXECUTE                   = 0x00000010
+PAGE_EXECUTE_READ              = 0x00000020
+PAGE_EXECUTE_READWRITE         = 0x00000040
+PAGE_EXECUTE_WRITECOPY         = 0x00000080
+PAGE_GUARD                     = 0x00000100
+PAGE_NOCACHE                   = 0x00000200
+PAGE_WRITECOMBINE              = 0x00000400
+
 
 # Structures for CreateProcessA() function
 class STARTUPINFO(Structure):
