@@ -5,7 +5,7 @@ from my_debugger_defines import *
 kernel32 = windll.kernel32
 
 
-class debugger():
+class debugger:
 
     def __init__(self):
         self.h_process = None
