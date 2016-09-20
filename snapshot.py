@@ -1,9 +1,7 @@
 from pydbg import *
-from pydbg.defines import *
 
 import threading
 import time
-import sys
 
 
 class snapshotter(object):
